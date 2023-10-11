@@ -22,7 +22,8 @@ const Url = mongoose.model('Url', urlSchema);
 
 
 
-apiRouter.use(bodyParser.json());
+apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
+
 
 
 
