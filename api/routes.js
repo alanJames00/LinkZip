@@ -1,13 +1,11 @@
 const express = require('express');
-// const createEntry = require('../index2');
 const bodyParser = require('body-parser');
 const apiRouter = express.Router();
-const dns = require('node:dns');
-
-
 require('dotenv').config();
 const mongoose = require('mongoose');
 
+
+// MongoDB Atlas setup
 const uri = process.env.MONGO_URI;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
     .then(console.log('connected to atlas'));
@@ -23,10 +21,6 @@ const Url = mongoose.model('Url', urlSchema);
 
 
 apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
-
-
-
-
 
 apiRouter.post('/shorturl', (req, res) => {
 
@@ -49,7 +43,6 @@ apiRouter.post('/shorturl', (req, res) => {
 
         Url.find({ original_url: bodyUrl }).then((doc1) => {
 
-
             if (doc1.length == 0) {
                 // url not found in db therefore create.
                 max_c = max_c + 1;
@@ -67,9 +60,7 @@ apiRouter.post('/shorturl', (req, res) => {
                             })
                         })
                 });
-
             }
-
 
             else {
                 // url already in db therefor respond with it
@@ -78,22 +69,10 @@ apiRouter.post('/shorturl', (req, res) => {
                     original_url: doc1[0].original_url,
                     short_url: doc1[0].short_url
                 });
-
             }
-
-
-
-
-
-
         })
-
     })
-
-
 })
-
-
 
 apiRouter.get('/shorturl/:url', (req, res) => {
 
@@ -112,13 +91,10 @@ apiRouter.get('/shorturl/:url', (req, res) => {
     })
 })
 
-
-
 apiRouter.get('/', (req, res) => {
     res.send('hello from api routes')
 })
 
-
-
+// Module Exports
 module.exports = apiRouter;
 
