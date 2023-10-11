@@ -25,5 +25,5 @@ function createEntry(original_url, short_url, done){
 }
 
 
-module.exports = createEntry;
+module.exports
 
