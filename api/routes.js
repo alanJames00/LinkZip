@@ -6,69 +6,118 @@ const dns = require('node:dns');
 
 
 require('dotenv').config();
-console.log(process.env.MONGO_URI);
-
 const mongoose = require('mongoose');
 
 const uri = process.env.MONGO_URI;
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
+    .then(console.log('connected to atlas'));
 
-mongoose.connect(uri, {useUnifiedTopology: true})
-    .then(()=> console.log('connected')).catch((err)=> console.log(err));
 
 const urlSchema = mongoose.Schema({
-        original_url: String,
-        short_url: String
-    })
+    original_url: String,
+    short_url: String
+})
 
 const Url = mongoose.model('Url', urlSchema);
 
-
-function createEntry(original_url, short_url, done){
-    Url.create({
-        original_url:original_url,
-        short_url:short_url
-    }, function (err, data){
-            done(null, data);
-    })
-}
 
 
 apiRouter.use(bodyParser.json());
 
 
-apiRouter.get('/', (req, res)=>{
-    res.send('hello from api routes')
-})
 
-apiRouter.post('/shorturl', (req, res)=>{
-    const original_url = req.body.url;
 
-    // dns lookup to verify url integrity
+apiRouter.post('/shorturl', (req, res) => {
+
+    const bodyUrl = req.body.url;
+
+    // Check for valid url string with RegeX
     let urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/);
 
-    if (!original_url.match(urlRegex)) {
+    if (!bodyUrl.match(urlRegex)) {
         return res.json({ error: "Invalid URL" });
     }
 
+    // Handle th db update
 
-    // Check if url already exists
-    Url.find({
-        original_url: original_url
-    }).then(function(doc){
-        console.log(doc);
+    // Get max count from db
+    Url.findOne({ short_url: 'maxCount' }).then((doc) => {
+        let max_c = parseInt(doc.original_url);
+        console.log(typeof (max_c));
+        // Check if url already in db
+
+        Url.find({ original_url: bodyUrl }).then((doc1) => {
+
+
+            if (doc1.length == 0) {
+                // url not found in db therefore create.
+                max_c = max_c + 1;
+                Url.create({
+                    original_url: bodyUrl,
+                    short_url: max_c.toString()
+                }).then((doc2) => {
+
+                    // Update maxCount
+                    Url.findOneAndUpdate({ short_url: 'maxCount' }, { original_url: max_c.toString() })
+                        .then((doc4) => {
+                            res.json({
+                                original_url: doc2.original_url,
+                                short_url: doc2.short_url
+                            })
+                        })
+                });
+
+            }
+
+
+            else {
+                // url already in db therefor respond with it
+
+                res.json({
+                    original_url: doc1[0].original_url,
+                    short_url: doc1[0].short_url
+                });
+
+            }
+
+
+
+
+
+
+        })
+
     })
 
 
-    // Url.create({
-    //     original_url: original_url,
-    //     short_url: 4
-    // }).then(function(doc){
-    //     console.log(doc);
-    // })
-
-    
-
-    
 })
 
+
+
+apiRouter.get('/shorturl/:url', (req, res) => {
+
+    const reqUrl = req.params.url;
+    Url.find({short_url:reqUrl}).then((doc)=>{
+        // handle not found
+        if(doc.length == 0){
+            res.json(
+                { error: 'url not found' }
+            )
+        }
+        else{
+            res.redirect(doc[0].original_url);
+        }
+        // handle found
+    })
+})
+
+
+
+apiRouter.get('/', (req, res) => {
+    res.send('hello from api routes')
+})
+
+
+
 module.exports = apiRouter;
+
