@@ -101,7 +101,7 @@ apiRouter.get('/shorturl/:url', (req, res) => {
         // handle not found
         if(doc.length == 0){
             res.json(
-                { error: 'url not found' }
+                {error:"No short URL found for the given input"}
             )
         }
         else{
