@@ -40,9 +40,9 @@ apiRouter.post('/shorten', (req, res) => {
     Url.findOne({ short_url: 'maxCount' }).then((doc) => {
         let max_c = parseInt(doc.original_url);
         console.log(typeof (max_c));
-        // Check if url already in db
+        // Check if shortened-url already in db
 
-        Url.find({ original_url: bodyUrl }).then((doc1) => {
+        Url.find({ short_url: bodyShortUrl }).then((doc1) => {
 
             if (doc1.length == 0) {
                 // url not found in db therefore create.
@@ -56,6 +56,7 @@ apiRouter.post('/shorten', (req, res) => {
                     Url.findOneAndUpdate({ short_url: 'maxCount' }, { original_url: max_c.toString() })
                         .then((doc4) => {
                             res.json({
+                                message: "Short Url created successfully",
                                 original_url: doc2.original_url,
                                 short_url: doc2.short_url
                             })
@@ -67,8 +68,9 @@ apiRouter.post('/shorten', (req, res) => {
                 // url already in db therefor respond with it
 
                 res.json({
+                    message: "the shortened url already exists, try new one",
                     original_url: doc1[0].original_url,
-                    short_url: doc1[0].short_url
+                    short_url: doc1[0].short_url,
                 });
             }
         })
