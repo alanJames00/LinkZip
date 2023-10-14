@@ -74,7 +74,7 @@ apiRouter.post('/shorturl', (req, res) => {
     })
 })
 
-apiRouter.get('/shorturl/:url', (req, res) => {
+apiRouter.get('/:url', (req, res) => {
 
     const reqUrl = req.params.url;
     Url.find({short_url:reqUrl}).then((doc)=>{
@@ -92,7 +92,7 @@ apiRouter.get('/shorturl/:url', (req, res) => {
 })
 
 apiRouter.get('/', (req, res) => {
-    res.send('hello from api routes')
+    res.send('Hi, This is LinkZip');
 })
 
 // Module Exports
