@@ -25,6 +25,7 @@ apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
 apiRouter.post('/shorten', (req, res) => {
 
     const bodyUrl = req.body.url;
+    const bodyShortUrl = req.body.shorturl;
 
     // Check for valid url string with RegeX
     let urlRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/);
@@ -48,7 +49,7 @@ apiRouter.post('/shorten', (req, res) => {
                 max_c = max_c + 1;
                 Url.create({
                     original_url: bodyUrl,
-                    short_url: max_c.toString()
+                    short_url: bodyShortUrl.toString()
                 }).then((doc2) => {
 
                     // Update maxCount
