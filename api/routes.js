@@ -22,7 +22,7 @@ const Url = mongoose.model('Url', urlSchema);
 
 apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
 
-apiRouter.post('/shorturl', (req, res) => {
+apiRouter.post('/shorten', (req, res) => {
 
     const bodyUrl = req.body.url;
 
