@@ -92,3 +92,6 @@ This documentation provides detailed explanations of the API endpoints, their us
 ---
 
 This documentation provides a complete understanding of the LinkZip URL shortening API, its endpoints, and how to integrate it into your projects. If you have any questions or need further assistance, please don't hesitate to contact us.
+
+### How To Self-Host the API
+We provide the ability to self-host the API for your own personal use or organization
