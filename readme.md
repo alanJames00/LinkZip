@@ -7,7 +7,8 @@ Welcome to the documentation for the LinkZip URL shortening API. LinkZip is a mi
 
 To access the LinkZip URL shortening service, please use the following production URL:
 
-- **Production URL**: [https://linkzip.onrender.com](https://linkzip.onrender.com)
+- **Production URL 1**: [http://lz.linkzip.co/](http://lz.linkzip.co/)
+- **Production URL 2**: [https://linkzip.onrender.com](https://linkzip.onrender.com)
 
 ### API Endpoints
 
