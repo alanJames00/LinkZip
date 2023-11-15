@@ -6,7 +6,9 @@ const cors = require('cors')
 
 const port = process.env.PORT;
 
+// use cors policy to accept connections from anywhere
 app.use(cors());
+
 app.use('/', apiRouter);
 
 app.listen(port, ()=>{
