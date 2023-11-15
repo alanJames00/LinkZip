@@ -58,7 +58,7 @@ apiRouter.post('/shorten', (req, res) => {
                             res.json({
                                 info: "Short Url created successfully",
                                 original_url: doc2.original_url,
-                                short_url: `https://linkzip.onrender.com/${doc2.short_url}`
+                                short_url: `https://lz.linkzip.co/${doc2.short_url}`
                             })
                         })
                 });
@@ -70,7 +70,7 @@ apiRouter.post('/shorten', (req, res) => {
                 res.json({
                     info: "the shortened url already exists, try new one",
                     original_url: doc1[0].original_url,
-                    short_url: `https://linkzip.onrender.com/${doc2.short_url}`,
+                    short_url: `https://lz.linkzip.co/${doc2.short_url}`,
                 });
             }
         })
