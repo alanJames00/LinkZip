@@ -79,13 +79,28 @@ apiRouter.post('/shorten', (req, res) => {
 
 apiRouter.post('/test', (req, res ) => {
 
-    
+    // check for randomly generated url option
 
-    res.json({
-        info: "Short Url created successfully. testing purpose only",
-        original_url: req.body.url,
-        short_url: `https://linkzip.onrender/${req.body.shorturl}`                  
-        })
+    if(req.body.randomUrl == 'true') {
+
+        const genShortUrl = 'rnara'
+        res.json({
+            info: "Short Url created successfully. testing purpose only",
+            original_url: req.body.url,
+            short_url: `https://linkzip.onrender/${genShortUrl}`                  
+            })
+    }
+
+    else {
+
+        const genShortUrl = req.body.shorturl;
+        res.json({
+            info: "Short Url created successfully. testing purpose only",
+            original_url: req.body.url,
+            short_url: `https://linkzip.onrender/${genShortUrl}`                  
+            })
+    }
+    
 }) 
 
 apiRouter.get('/:url', (req, res) => {
