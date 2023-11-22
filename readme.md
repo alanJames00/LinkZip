@@ -1,7 +1,7 @@
 
 ## LinkZip URL Shortening API Documentation
 
-Welcome to the documentation for the LinkZip URL shortening API. LinkZip is a minimalist and efficient URL shortening service designed for simplicity and speed. This documentation provides a comprehensive guide on how to use the API for shortening long URLs into clean and shareable links.
+LinkZip is a minimalist and efficient URL shortening service designed for simplicity and speed. This documentation provides a comprehensive guide on how to use the API for shortening long URLs into clean and shareable links.
 
 ### Production URL
 
