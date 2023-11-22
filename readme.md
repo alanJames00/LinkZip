@@ -7,7 +7,7 @@ LinkZip is a minimalist and efficient URL shortening service designed for simpli
 
 To access the LinkZip URL shortening service, please use the following production URL:
 
-- **Production URL 1 (On Cloud VM, fast)**: [http://lz.linkzip.co/](https://lz.linkzip.co/)
+- **Production URL 1 (On Cloud VM, fast)**: [https://lz.linkzip.co/](https://lz.linkzip.co/)
 - **Production URL 2 (On Serverless)**: [https://linkzip.onrender.com](https://linkzip.onrender.com)
 
 ### API Endpoints
