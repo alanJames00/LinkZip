@@ -119,36 +119,6 @@ apiRouter.post('/shorten', async (req, res) => {
 
 })
 
-apiRouter.post('/test', (req, res ) => {
-
-    // check for randomly generated url option
-    console.log(req.body);
-
-
-    
-
-    if(req.body.randomUrl == true) {
-        console.log('ran');
-        const genShortUrl = 'rnara';
-        res.json({
-            info: "Short Url created successfully. testing purpose only",
-            original_url: req.body.url,
-            short_url: `https://linkzip.onrender/rnadom`                  
-            })
-    }
-
-    else {
-
-        const genShortUrl = req.body.shorturl;
-        res.json({
-            info: "Short Url created successfully. testing purpose only",
-            original_url: req.body.url,
-            short_url: `https://linkzip.onrender/${genShortUrl}`                  
-            })
-    }
-    
-}) 
-
 apiRouter.get('/:url', (req, res) => {
 
     const reqUrl = req.params.url;
