@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const apiRouter = express.Router();
 require('dotenv').config();
 const mongoose = require('mongoose');
+const uuidv4 = require('uuid').v4;
 
 
 
@@ -24,7 +25,7 @@ const Url = mongoose.model('Url', urlSchema);
 
 apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
 
-apiRouter.post('/shorten', (req, res) => {
+apiRouter.post('/shorten', async (req, res) => {
 
     const bodyUrl = req.body.url;
     const bodyShortUrl = req.body.shorturl;
@@ -37,9 +38,23 @@ apiRouter.post('/shorten', (req, res) => {
     }
 
     // Handle th db update
-
+    console.log(req.body);
     // check for customURL request or RandomURL request
-    if(req.body.randomUrl == true) {
+    if(req.body.randomUrl == 'true') {
+
+        // Generate uuid
+        function generateCustomUuid(){
+
+            let genRandomURL = uuidv4();
+            genRandomURL = genRandomURL.substring(0,6);
+            return genRandomURL; 
+        }
+
+         // Do a while loop until we find the unique uuid in db
+         
+    
+        let urlExists = await Url.find({short_url: 'uuid'});
+        
 
     }
 
