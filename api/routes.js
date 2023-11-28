@@ -5,6 +5,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 
 
+
+
 // MongoDB Atlas setup
 const uri = process.env.MONGO_URI;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
@@ -35,6 +37,14 @@ apiRouter.post('/shorten', (req, res) => {
     }
 
     // Handle th db update
+
+    // check for customURL request or RandomURL request
+    if(req.body.randomUrl == true) {
+
+    }
+
+    else {
+
 
     // Get max count from db
     Url.findOne({ short_url: 'maxCount' }).then((doc) => {
@@ -71,23 +81,30 @@ apiRouter.post('/shorten', (req, res) => {
                     info: "the shortened url already exists, try new one",
                     original_url: doc1[0].original_url,
                     short_url: `https://lz.linkzip.co/${doc2.short_url}`,
-                });
-            }
+                    });
+                }
+            })
         })
-    })
+    }
+
+
 })
 
 apiRouter.post('/test', (req, res ) => {
 
     // check for randomly generated url option
+    console.log(req.body);
 
-    if(req.body.randomUrl == 'true') {
 
-        const genShortUrl = 'rnara'
+    
+
+    if(req.body.randomUrl == true) {
+        console.log('ran');
+        const genShortUrl = 'rnara';
         res.json({
             info: "Short Url created successfully. testing purpose only",
             original_url: req.body.url,
-            short_url: `https://linkzip.onrender/${genShortUrl}`                  
+            short_url: `https://linkzip.onrender/rnadom`                  
             })
     }
 
