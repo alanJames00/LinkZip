@@ -56,9 +56,9 @@ apiRouter.post('/shorten', (req, res) => {
                     Url.findOneAndUpdate({ short_url: 'maxCount' }, { original_url: max_c.toString() })
                         .then((doc4) => {
                             res.json({
-                                message: "Short Url created successfully",
+                                info: "Short Url created successfully",
                                 original_url: doc2.original_url,
-                                short_url: doc2.short_url
+                                short_url: `https://linkzip.onrender.com/${doc2.short_url}`
                             })
                         })
                 });
@@ -68,14 +68,25 @@ apiRouter.post('/shorten', (req, res) => {
                 // url already in db therefor respond with it
 
                 res.json({
-                    message: "the shortened url already exists, try new one",
+                    info: "the shortened url already exists, try new one",
                     original_url: doc1[0].original_url,
-                    short_url: doc1[0].short_url,
+                    short_url: `https://linkzip.onrender.com/${doc2.short_url}`,
                 });
             }
         })
     })
 })
+
+apiRouter.post('/test', (req, res ) => {
+
+    
+
+    res.json({
+        info: "Short Url created successfully. testing purpose only",
+        original_url: req.body.url,
+        short_url: `https://linkzip.onrender/${req.body.shorturl}`                  
+        })
+}) 
 
 apiRouter.get('/:url', (req, res) => {
 
