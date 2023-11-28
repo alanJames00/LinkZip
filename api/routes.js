@@ -37,8 +37,7 @@ apiRouter.post('/shorten', async (req, res) => {
         return res.json({ error: "Invalid URL" });
     }
 
-    // Handle th db update
-    console.log(req.body);
+    
     // check for customURL request or RandomURL request
     if(req.body.randomUrl == 'true') {
 
@@ -52,10 +51,25 @@ apiRouter.post('/shorten', async (req, res) => {
 
          // Do a while loop until we find the unique uuid in db
          
-    
-        let urlExists = await Url.find({short_url: 'uuid'});
+        let genUrl = generateCustomUuid();
+        let urlExists = await Url.find({short_url: genUrl});
+        while(urlExists.length != 0) {
+            // regenerate the uuid and check again.
+            let urlExists = await Url.find({short_url: genUrl});
+            urlExists = await Url.find({ short_url: genUrl});
+        }
         
+        // Create new entry in db
+        const result = await Url.create({
+            original_url: bodyUrl,
+            short_url: genUrl,
+        });
 
+        res.json({
+            info: "Short Url created successfully",
+            original_url: result.original_url,
+            short_url: `https://lz.linkzip.co/${result.short_url}`,
+        });
     }
 
     else {
