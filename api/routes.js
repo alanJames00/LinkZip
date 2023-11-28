@@ -37,7 +37,7 @@ apiRouter.post('/shorten', async (req, res) => {
         return res.json({ error: "Invalid URL" });
     }
 
-    
+
     // check for customURL request or RandomURL request
     if(req.body.randomUrl == 'true') {
 
@@ -78,7 +78,7 @@ apiRouter.post('/shorten', async (req, res) => {
     // Get max count from db
     Url.findOne({ short_url: 'maxCount' }).then((doc) => {
         let max_c = parseInt(doc.original_url);
-        console.log(typeof (max_c));
+        
         // Check if shortened-url already in db
 
         Url.find({ short_url: bodyShortUrl }).then((doc1) => {
