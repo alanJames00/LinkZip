@@ -116,7 +116,7 @@ apiRouter.get('/:url', async (req, res) => {
     }
     else {
         
-        res.json(urlExists[0]);
+        res.redirect(urlExists[0].original_url);
     }
 
     
