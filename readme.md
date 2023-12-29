@@ -80,7 +80,7 @@ To access the LinkZip URL shortening service, please use the following productio
 
 - **Example**:
   - **Request**:
-    - Accessing `https://linkzip.onrender.com/mycustomshorturl` will redirect to the original URL associated with the short URL.
+    - Accessing `https://lz.linkzip.co/mycustomshorturl` will redirect to the original URL associated with the short URL.
 
 #### Endpoint: GET /
 
