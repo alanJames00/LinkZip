@@ -119,21 +119,24 @@ apiRouter.post('/shorten', async (req, res) => {
 
 })
 
-apiRouter.get('/:url', (req, res) => {
+apiRouter.get('/:url', async (req, res) => {
 
     const reqUrl = req.params.url;
-    Url.find({short_url:reqUrl}).then((doc)=>{
-        // handle not found
-        if(doc.length == 0){
-            res.json(
-                {error:"No short URL found for the given input"}
-            )
-        }
-        else{
-            res.redirect(doc[0].original_url);
-        }
-        // handle found
-    })
+
+    // Read from the database
+    const urlExists = await Url.find({ short_url: reqUrl });
+    
+    if(urlExists.length == 0) {
+        res.json({
+            error: 'The requested Url is not found'
+        });
+    }
+    else {
+        
+        res.json(urlExists[0]);
+    }
+
+    
 })
 
 apiRouter.get('/', (req, res) => {
