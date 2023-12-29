@@ -22,6 +22,7 @@ To access the LinkZip URL shortening service, please use the following productio
   - **Request Body**:
     - `url` (string, required): The original URL to be shortened.
     - `shorturl` (string, optional): A custom short URL, if desired.
+    - `randomUrl` (string: `true` or `false`, optional): Generates a random short URL, if specified true.
 
 - **Response**:
   - **Success (HTTP 200 OK)**:
@@ -29,7 +30,7 @@ To access the LinkZip URL shortening service, please use the following productio
   - **Error (HTTP 400 Bad Request or 500 Internal Server Error)**:
     - JSON response with an error message.
 
-- **Example**:
+- **Example 1: For Custom ShortURL**:
   - **Request**:
     ```json
     {
@@ -42,10 +43,26 @@ To access the LinkZip URL shortening service, please use the following productio
     {
       "message": "Short URL created successfully",
       "original_url": "https://example.com",
-      "short_url": "mycustomshorturl"
+      "short_url": "https://lz.linkzip.co/mycustomshorturl"
     }
     ```
 
+- **Example 2: For Random Short URL**:
+  - **Request**:
+    ```json
+    {
+      "url": "https://example.com",
+      "randomUrl":"true"
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "info": "Short Url created successfully",
+      "original_url": "https://example.com",
+      "short_url": "https://lz.linkzip.co/8ae6de"
+    }
+    ```
 #### Endpoint: GET /:url
 
 - **Description**: Redirect to the original URL associated with the provided short URL.
