@@ -74,66 +74,57 @@ apiRouter.post('/shorten', async (req, res) => {
 
     else {
 
-
-    // Get max count from db
-    Url.findOne({ short_url: 'maxCount' }).then((doc) => {
-        let max_c = parseInt(doc.original_url);
+        // check if the url alread exist in the database
+        const urlExists = await Url.find({ short_url: bodyShortUrl });
         
-        // Check if shortened-url already in db
+        if(urlExists.length == 0) {
 
-        Url.find({ short_url: bodyShortUrl }).then((doc1) => {
+            const result = await Url.create({
+                original_url: bodyUrl,
+                short_url: bodyShortUrl.toString()
+            });
 
-            if (doc1.length == 0) {
-                // url not found in db therefore create.
-                max_c = max_c + 1;
-                Url.create({
-                    original_url: bodyUrl,
-                    short_url: bodyShortUrl.toString()
-                }).then((doc2) => {
-
-                    // Update maxCount
-                    Url.findOneAndUpdate({ short_url: 'maxCount' }, { original_url: max_c.toString() })
-                        .then((doc4) => {
-                            res.json({
-                                info: "Short Url created successfully",
-                                original_url: doc2.original_url,
-                                short_url: `https://lz.linkzip.co/${doc2.short_url}`
-                            })
-                        })
-                });
-            }
-
-            else {
-                // url already in db therefor respond with it
-
-                res.json({
-                    info: "the shortened url already exists, try new one",
-                    original_url: doc1[0].original_url,
-                    short_url: `https://lz.linkzip.co/${doc2.short_url}`,
-                    });
-                }
+            res.json({
+                info: "Short Url created successfully",
+                original_url: result.original_url,
+                short_url: `https://lz.linkzip.co/${result.short_url}`
             })
-        })
+        }
+
+        else {
+
+            res.json({
+                info: "the shortened url already exists, try new one",
+                original_url: urlExists[0].original_url,
+                short_url: `https://lz.linkzip.co/${urlExists[0].short_url}`,
+                });
+        }
+
+
+
     }
 
 
 })
 
-apiRouter.get('/:url', (req, res) => {
+apiRouter.get('/:url', async (req, res) => {
 
     const reqUrl = req.params.url;
-    Url.find({short_url:reqUrl}).then((doc)=>{
-        // handle not found
-        if(doc.length == 0){
-            res.json(
-                {error:"No short URL found for the given input"}
-            )
-        }
-        else{
-            res.redirect(doc[0].original_url);
-        }
-        // handle found
-    })
+
+    // Read from the database
+    const urlExists = await Url.find({ short_url: reqUrl });
+    
+    if(urlExists.length == 0) {
+        res.json({
+            error: 'The requested Url is not found'
+        });
+    }
+    else {
+        
+        res.json(urlExists[0]);
+    }
+
+    
 })
 
 apiRouter.get('/', (req, res) => {
