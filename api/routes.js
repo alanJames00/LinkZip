@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 const uuidv4 = require('uuid').v4;
 
 
-
-
 // MongoDB Atlas setup
 const uri = process.env.MONGO_URI;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
@@ -20,7 +18,6 @@ const urlSchema = mongoose.Schema({
 })
 
 const Url = mongoose.model('Url', urlSchema);
-
 
 
 apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
@@ -79,6 +76,7 @@ apiRouter.post('/shorten', async (req, res) => {
         
         if(urlExists.length == 0) {
 
+            // Create new entry in db
             const result = await Url.create({
                 original_url: bodyUrl,
                 short_url: bodyShortUrl.toString()
@@ -93,17 +91,14 @@ apiRouter.post('/shorten', async (req, res) => {
 
         else {
 
+            // custom shortURL already exist in the database
             res.json({
                 info: "the shortened url already exists, try new one",
                 original_url: urlExists[0].original_url,
                 short_url: `https://lz.linkzip.co/${urlExists[0].short_url}`,
                 });
         }
-
-
-
     }
-
 
 })
 
