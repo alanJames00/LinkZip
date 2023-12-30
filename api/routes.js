@@ -1,26 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const apiRouter = express.Router();
-require('dotenv').config();
-const mongoose = require('mongoose');
+const Url = require("./models/urlModel");
 const uuidv4 = require('uuid').v4;
 
 
-// MongoDB Atlas setup
-const uri = process.env.MONGO_URI;
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
-    .then(console.log('connected to atlas'));
-
-
-const urlSchema = mongoose.Schema({
-    original_url: String,
-    short_url: String
-})
-
-const Url = mongoose.model('Url', urlSchema);
-
-
-apiRouter.use(bodyParser.json()); // Depends on the type of encoding used
+apiRouter.use(express.json()); // Depends on the type of encoding used
 
 apiRouter.post('/shorten', async (req, res) => {
 
